@@ -17,6 +17,18 @@ function App() {
     inputRef.current.value = null;
   }
 
+  function toggleToDo(id) {
+    const newToDos = [...toDos];
+    const todo = newToDos.find(todo => todo.id === id)
+    todo.complete = !todo.complete;
+    setTodos(newToDos);
+  }
+
+  function handleClearComplete() {
+    const incompleteToDos = toDos.filter( todo => todo.complete === false);
+    setTodos(incompleteToDos);
+  }
+
   useEffect( () => {
     const storedToDos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (storedToDos)  setTodos(storedToDos);
@@ -29,10 +41,10 @@ function App() {
 
   return (
     <>
-      <TodoList toDos={toDos}></TodoList>
+      <TodoList toDos={toDos} toggleToDo={toggleToDo}></TodoList>
       <input ref={inputRef} type="text"></input>
       <button onClick={handleOnClick}>Add Todo</button>
-      <button>Clear Completed Todos</button>
+      <button onClick={handleClearComplete}>Clear Completed Todos</button>
       <div>
         <ToDosCounter toDos={toDos}></ToDosCounter>
       </div>
